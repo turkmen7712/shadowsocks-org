@@ -1,4 +1,4 @@
-# What is Shadowsocks?
+client <---> ss-local <--[encrypted]--> ss-remote <---> target# What is Shadowsocks?
 
 Shadowsocks is a secure split proxy loosely based on [SOCKS5](https://tools.ietf.org/html/rfc1928).
 
@@ -9,7 +9,7 @@ client <---> ss-local <--[encrypted]--> ss-remote <---> target
 
 The Shadowsocks local component (ss-local) acts like a traditional SOCKS5 server and provides proxy service to clients. It encrypts and forwards data streams and packets from the client to the Shadowsocks remote component (ss-remote), which decrypts and forwards to the target. Replies from target are similarly encrypted and relayed by ss-remote back to ss-local, which decrypts and eventually returns to the original client.
 
-## Addressing
+[1-byte type][variable-length host][2-byte port]## Addressing
 
 Addresses used in Shadowsocks follow the [SOCKS5 address format](https://tools.ietf.org/html/rfc1928#section-5):
 
@@ -26,7 +26,7 @@ The following address types are defined:
 The port number is a 2-byte big-endian unsigned integer.
 
 
-## TCP 
+[target address][payload]## TCP 
 
 ss-local initiates a TCP connection to ss-remote by sending an encrypted data stream starting with the target address followed by payload data. The exact encryption scheme differs depending on the cipher used.
 
@@ -38,7 +38,7 @@ ss-remote receives the encrypted data stream, decrypts and parses the leading ta
 
 For better obfuscation purposes, both local and remote SHOULD send the handshake data along with some payload in the first packet.
 
-## UDP
+[target address][payload]## UDP
 
 ss-local sends an encrypted data packet containing the target address and payload to ss-remote.
 
